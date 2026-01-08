@@ -6,7 +6,7 @@ export const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2024-01-01",
-  useCdn: false, // Important: Set to false for fresh data
+  useCdn: false, // keep false for client projects
 });
 
 const builder = imageUrlBuilder(sanityClient);
@@ -15,7 +15,8 @@ export function urlForImage(source: SanityImageSource) {
   return builder.image(source).url();
 }
 
-// Get all active hero slides
+/* -------------------------------- HERO -------------------------------- */
+
 export async function getHeroSlides() {
   const query = `*[_type == "heroSlide" && isActive == true] | order(order asc) {
     _id,
@@ -29,12 +30,13 @@ export async function getHeroSlides() {
     order
   }`;
 
-  return await sanityClient.fetch(query, {}, { 
-    next: { revalidate: 60 } // Revalidate every 60 seconds
+  return sanityClient.fetch(query, {}, {
+    next: { tags: ["hero"] }
   });
 }
 
-// Get all active banners
+/* -------------------------------- BANNERS -------------------------------- */
+
 export async function getBanners() {
   const query = `*[_type == "banner" && isActive == true] | order(position asc) {
     _id,
@@ -51,69 +53,47 @@ export async function getBanners() {
     position
   }`;
 
-  return await sanityClient.fetch(query, {}, { 
-    next: { revalidate: 60 } // Revalidate every 60 seconds
+  return sanityClient.fetch(query, {}, {
+    next: { tags: ["banners"] }
   });
 }
 
-// Get all active products
+/* -------------------------------- PRODUCTS -------------------------------- */
+
 export async function getProducts() {
   const query = `*[_type == "product"] | order(_createdAt desc) {
     _id,
     title,
     price,
-    images[] {
-      asset-> {
-        _id,
-        url
-      }
-    },
     "imageUrls": images[].asset->url,
     sizes,
     colors,
     description,
-    sizeChart {
-      asset-> {
-        _id,
-        url
-      }
-    },
     "sizeChartUrl": sizeChart.asset->url,
     isActive
   }`;
 
-  return await sanityClient.fetch(query, {}, { 
-    next: { revalidate: 60 } // Revalidate every 60 seconds
+  return sanityClient.fetch(query, {}, {
+    next: { tags: ["products"] }
   });
 }
 
-// Get single product by ID
+/* -------------------------------- SINGLE PRODUCT -------------------------------- */
+
 export async function getProductById(id: string) {
   const query = `*[_type == "product" && _id == $id][0] {
     _id,
     title,
     price,
-    images[] {
-      asset-> {
-        _id,
-        url
-      }
-    },
     "imageUrls": images[].asset->url,
     sizes,
     colors,
     description,
-    sizeChart {
-      asset-> {
-        _id,
-        url
-      }
-    },
     "sizeChartUrl": sizeChart.asset->url,
     isActive
   }`;
 
-  return await sanityClient.fetch(query, { id }, { 
-    next: { revalidate: 60 } // Revalidate every 60 seconds
+  return sanityClient.fetch(query, { id }, {
+    next: { tags: ["products"] }
   });
 }

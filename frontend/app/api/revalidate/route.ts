@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
     }
 
-    // ✅ REQUIRED second argument: profile
+    // ✅ REQUIRED second argument: profile and instant updates
     revalidateTag("products", "default");
     revalidateTag("hero", "default");
     revalidateTag("banners", "default");
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     return NextResponse.json(
-      { error: "Revalidation failed" },
+      { error: "Revalidation failed Check logs" },
       { status: 500 }
     );
   }

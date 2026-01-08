@@ -130,7 +130,7 @@ export default function Footer({ whatsappNumber = "7084721011" }: FooterProps) {
               <ul className="space-y-5 text-gray-400 text-sm">
                 <li className="flex gap-4 items-start group">
                   <MapPin size={20} className="text-white shrink-0 group-hover:animate-bounce" />
-                  <span className="font-medium leading-tight">Narnaund, Haryana, India</span>
+                  <span className="font-medium leading-tight">Harriya City, Basti ,272155</span>
                 </li>
                 <li className="flex gap-4 items-start group">
                   <Mail size={20} className="text-white shrink-0" />

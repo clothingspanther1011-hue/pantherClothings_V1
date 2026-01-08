@@ -25,7 +25,7 @@ export default function ContactPage() {
     {
       icon: <MapPin className="w-8 h-8" />,
       title: "Visit Us",
-      description: "Narnaund, Haryana, India - 125039",
+      description: "Harriya City, Basti, India-272155",
       actionText: "Get Directions",
       link: "https://maps.google.com",
       color: "bg-red-500",
